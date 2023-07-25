@@ -15,18 +15,22 @@ import java.util.List;
  */
 @RestController
 public class HelloController {
+    public HelloController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public String hello(){
         return "hello springboot";
     }
 
     //让spring自动注入对象
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/list")
     public List<User> list(){
-        return userService.list();
+//        return userService.list();
+        return userService.listAll();
     }
 
 }

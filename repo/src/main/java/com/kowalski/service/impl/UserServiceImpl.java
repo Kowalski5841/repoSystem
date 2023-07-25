@@ -7,6 +7,9 @@ import com.kowalski.mapper.UserMapper;
 import com.kowalski.service.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * @author Kowalski
  * @version 1.0
@@ -14,4 +17,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    @Resource
+    private UserMapper userMapper;
+    @Override
+    public List<User> listAll() {
+        return userMapper.listAll();
+    }
 }
