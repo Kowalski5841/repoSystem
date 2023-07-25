@@ -23,4 +23,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> listAll() {
         return userMapper.listAll();
     }
+
 }
