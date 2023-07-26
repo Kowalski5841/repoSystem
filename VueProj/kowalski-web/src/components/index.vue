@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
 .el-header {
-  background-color: #B3C0D1;
+  background-color:RGB(0,183,195);
   color: #333;
   line-height: 60px;
 }
