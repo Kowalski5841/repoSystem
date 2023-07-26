@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kowalski.common.QueryPageParam;
+import com.kowalski.common.Result;
 import com.kowalski.entity.User;
 import com.kowalski.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,30 @@ public class HelloController {
     System.out.println("total=" + res.getTotal());
 
     return res.getRecords();
+
+    }
+    @PostMapping("/listPageC1")
+    public Result listPageC1(@RequestBody QueryPageParam queryPageParam){
+
+
+        HashMap map = queryPageParam.getParam();
+        //在这里获取需要查找的字段
+        String name = (String)map.get("name");
+//    Integer id = (Integer) map.get("id");
+        Page<User> page = new Page<>();
+        page.setCurrent(queryPageParam.getPageNum());
+        page.setSize(queryPageParam.getPageSize());
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //这句话是用来定义根据什么查找数据的
+        lambdaQueryWrapper.like(User::getName,name);
+        //例如还可以这么写。
+//    lambdaQueryWrapper.eq(User::getId,id);
+
+        IPage res =  userService.pageC(page,lambdaQueryWrapper);
+        System.out.println("total=" + res.getTotal());
+
+        return Result.success(res.getRecords(), res.getTotal());
 
     }
 }
