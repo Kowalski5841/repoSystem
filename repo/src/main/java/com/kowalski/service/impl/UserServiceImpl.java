@@ -1,5 +1,8 @@
 package com.kowalski.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kowalski.entity.User;
 import com.kowalski.mapper.UserMapper;
@@ -23,5 +26,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> listAll() {
         return userMapper.listAll();
     }
+
+    @Override
+    public IPage pageC(IPage<User> page, Wrapper wrapper) {
+        return userMapper.pageC(page,wrapper);
+    }
+
 
 }
