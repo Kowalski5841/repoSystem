@@ -1,7 +1,7 @@
 <template>
-  <div style="display: flex;line-height: 60px; font-size: 20px;">
-    <div>
-      <i class="el-icon-s-fold"></i>
+  <div style="display: flex;line-height: 60px; font-size: 20px; ">
+    <div style="cursor: pointer;">
+      <i :class="icon" @click="collapse"></i>
     </div>
     <div style="text-align: center;flex: 1;font-size: 24px">
       <sapn>
@@ -28,6 +28,14 @@ export default {
     },
     logout(){
       console.log('logout');
+    },
+    collapse(){
+      this.$emit('doCollapse')
+    }
+  },
+  props:{
+    icon:{
+      icon:String
     }
   }
 }
