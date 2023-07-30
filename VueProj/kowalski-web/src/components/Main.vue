@@ -34,6 +34,15 @@
       <el-button size="small" type="danger">删除</el-button>
     </el-table-column>
   </el-table>
+  <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageNum"
+      :page-sizes="[5,10,15,20]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="this.total">
+  </el-pagination>
 </div>
 </template>
 
@@ -43,20 +52,39 @@ export default {
   data() {
 
     return {
-      tableData:[]
+      tableData:[],
+      pageSize:5,
+      pageNum:1,
+      total:0
     }
   },
   methods:{
+    handleSizeChange(val) {
+      this.pageSize = val
+      //防止出现未知的bug
+      this.pageNum = 1
+      this.loadPost()
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.pageNum = val
+      this.loadPost()
+      console.log(`当前页: ${val}`);
+    },
     loadGet(){
       this.$axios.get(this.$HttpUrl + '/user/list').then(res => res.data).then(res=>{
         console.log(res)
       })
     },
     loadPost(){
-      this.$axios.post(this.$HttpUrl + '/user/listL',{}).then(res => res.data).then(res=>{
+      this.$axios.post(this.$HttpUrl + '/user/listPageC1',{
+        pageSize:this.pageSize,
+        pageNum:this.pageNum
+      }).then(res => res.data).then(res=>{
         console.log(res)
         if(res.code === 200){
           this.tableData=res.data
+          this.total = res.total
         }else {
           alert('获取数据失败')
         }

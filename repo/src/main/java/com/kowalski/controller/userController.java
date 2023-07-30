@@ -140,7 +140,9 @@ public class userController {
 
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         //这句话是用来定义根据什么查找数据的
-        lambdaQueryWrapper.like(User::getName,name);
+        if (StringUtils.isNotBlank(name)) {
+            lambdaQueryWrapper.like(User::getName,name);
+        }
         //例如还可以这么写。
 //    lambdaQueryWrapper.eq(User::getId,id);
 
