@@ -16,7 +16,12 @@ export default {
 </script>
 
 <style>
+@import "./assets/font.css";
+ *{
+   font-family: "SmileySans";
+ }
 #app {
  height: 100%;
+
 }
 </style>

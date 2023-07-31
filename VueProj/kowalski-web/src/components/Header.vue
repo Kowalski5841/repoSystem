@@ -4,9 +4,9 @@
       <i :class="icon" @click="collapse"></i>
     </div>
     <div style="text-align: center;flex: 1;font-size: 24px">
-      <sapn>
+      <span>
         欢迎进入仓库管理系统
-      </sapn>
+      </span>
     </div>
     <span style="margin-right: 10px; font-size: 16px">王小虎</span>
     <el-dropdown>

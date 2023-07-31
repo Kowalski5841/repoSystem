@@ -42,8 +42,8 @@ public class userController {
 
     //新增
     @PostMapping("/save")
-    public boolean save(@RequestBody User user){
-        return userService.save(user);
+    public Result save(@RequestBody User user){
+        return userService.save(user) ? Result.success() : Result.fail();
     }
 
     //修改
@@ -133,15 +133,21 @@ public class userController {
         HashMap map = queryPageParam.getParam();
         //在这里获取需要查找的字段
         String name = (String)map.get("name");
+        String sex = (String)map.get("sex");
 //    Integer id = (Integer) map.get("id");
         Page<User> page = new Page<>();
         page.setCurrent(queryPageParam.getPageNum());
         page.setSize(queryPageParam.getPageSize());
 
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         //这句话是用来定义根据什么查找数据的
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+
+        //进行非空判断
         if (StringUtils.isNotBlank(name)) {
             lambdaQueryWrapper.like(User::getName,name);
+        }
+       if (StringUtils.isNotBlank(sex)) {
+            lambdaQueryWrapper.eq(User::getSex,sex);
         }
         //例如还可以这么写。
 //    lambdaQueryWrapper.eq(User::getId,id);
