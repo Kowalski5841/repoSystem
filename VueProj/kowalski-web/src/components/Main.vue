@@ -50,8 +50,20 @@
     <el-table-column prop="phone" label="手机" width="120">
     </el-table-column>
     <el-table-column prop="operation" label="操作" width="145">
-      <el-button size="small" type="primary">编辑</el-button>
-      <el-button size="small" type="danger">删除</el-button>
+
+      <template slot-scope="scope">
+      <el-button size="small" type="primary" @click="update(scope.row)" style="margin-right: 10px">编辑</el-button>
+        <el-popover
+            placement="top"
+            width="160"
+            >
+          <p>确定删除吗？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button type="primary" size="mini" @click="del(scope.row.id)">确定</el-button>
+          </div>
+          <el-button slot="reference" size="small" type="danger" >删除</el-button>
+        </el-popover>
+      </template>
     </el-table-column>
   </el-table>
   <el-pagination
@@ -119,11 +131,24 @@ export default {
       if(value>150){
         callback(new Error( '年龄输入过大' ));
       }else{
-        callback( );
+        callback();
       }
     };
 
-    return {
+    let checkDuplicate = (rule, value, callback) => {
+      if (this.form.id) {
+        return callback();
+      }
+      this.$axios.get(this.$HttpUrl + "/user/findByNo?no=" + this.form.no).then(res=>res.data).then(res => {
+        if (res.code != 200) {
+          callback()
+        } else {
+          callback(new Error('账号已经存在'));
+        }
+      })
+    };
+
+              return {
       tableData: [],
       pageSize: 5,
       pageNum: 1,
@@ -141,18 +166,20 @@ export default {
       ],
       centerDialogVisible: false,
       form: {
+        id:'',
         no: '',
         name: "",
         password: '',
         age: '',
         phone: '',
         sex: '0',
-        roleId: '1'
+        roleId: '2'
       },
       rules: {
         no: [
           {required: true, message: '请输入账号', trigger: 'blur'},
-          {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'}
+          {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'},
+          {validator: checkDuplicate, trigger: 'blur'}
         ],
         name: [
           {required: true, message: '请输入姓名', trigger: 'blur'}
@@ -175,7 +202,68 @@ export default {
     }
   },
   methods:{
+    doSave() {
+      this.$axios.post(this.$HttpUrl + '/user/save', this.form).then(res => res.data).then(res=>{
+        console.log(res)
+        if(res.code === 200){
+          this.centerDialogVisible=false
+          this.$message({
+            message: '操作成功',
+            type: 'success'
+          })
+          this.loadPost()
+        }else {
+          this.$message.error('操作失败');
+        }
+      })
+    },
 
+    doUpdate() {
+      this.$axios.post(this.$HttpUrl + '/user/update', this.form).then(res => res.data).then(res=>{
+        console.log(res)
+        if(res.code === 200){
+          this.centerDialogVisible=false
+          this.$message({
+            message: '操作成功',
+            type: 'success'
+          })
+          this.loadPost()
+        }else {
+          this.$message.error('操作失败');
+        }
+      })
+    },
+
+    del(id){
+      this.$axios.get(this.$HttpUrl + '/user/del?id=' + id).then(res => res.data).then(res=>{
+        console.log(res)
+        if(res.code === 200){
+          this.$message({
+            message: '操作成功',
+            type: 'success'
+          })
+          this.loadPost()
+        }else {
+          this.$message.error('操作失败');
+        }
+      })
+    },
+    update(row){
+      // console.log(row)
+      this.centerDialogVisible = true
+
+      this.$nextTick(()=>{
+        this.form.id = row.id
+        this.form.no = row.no
+        this.form.name = row.name
+        this.form.password = ''
+        //注意，这里的年龄和性别都需要加一个空字符串转换为string类型，否则前台不会显示数据
+        this.form.age = row.age + ''
+        this.form.phone = row.phone
+        this.form.sex = row.sex + ''
+        this.form.roleId = row.roleId
+      })
+    },
 
     resetForm() {
       this.$refs.form.resetFields()
@@ -183,19 +271,11 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.$axios.post(this.$HttpUrl + '/user/save', this.form).then(res => res.data).then(res=>{
-            console.log(res)
-            if(res.code === 200){
-              this.centerDialogVisible=false
-              this.$message({
-                message: '操作成功',
-                type: 'success'
-              })
-              this.loadPost()
-            }else {
-              this.$message.error('操作失败');
-            }
-          })
+          if(this.form.id){
+            this.doUpdate()
+          }else {
+            this.doSave()
+          }
         } else {
           console.log('error submit!!');
           return false;
