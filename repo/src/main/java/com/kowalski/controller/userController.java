@@ -187,4 +187,13 @@ public class userController {
         System.out.println("userController.update");
         return userService.removeById(id) ? Result.success() : Result.fail();
     }
+    @PostMapping("/login")
+    public Result login(@RequestBody User user){
+        System.out.println("userController.login");
+        List list = userService.lambdaQuery()
+                 .eq(User::getNo,user.getNo())
+                 .eq(User::getPassword,user.getPassword()).list();
+        return list.size() > 0 ? Result.success(list.get(0)) : Result.fail();
+    }
+
 }
