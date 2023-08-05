@@ -54,11 +54,12 @@
                             console.log(res)
                             if(res.code===200){
                                 //存储
-                                sessionStorage.setItem("CurUser",JSON.stringify(res.data.user))
+                                sessionStorage.setItem("CurUser",JSON.stringify(res.data))
+                              console.log('session里村存的对象是：')
+                              console.log(sessionStorage.getItem("CurUser"))
 
-                                console.log(res.data.menu)
-                                this.$store.commit("setMenu",res.data.menu)
-                              //KOWA TODO 2023/8/4: 无法解析store。为什么？
+                                // console.log(res.data.menu)
+                                // this.$store.commit("setMenu",res.data.menu)
                                 //跳转到主页
                                 this.$router.replace('/index');
                             }else{

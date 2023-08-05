@@ -8,7 +8,7 @@
         欢迎进入仓库管理系统
       </span>
     </div>
-    <span style="margin-right: 10px; font-size: 16px">王小虎</span>
+    <span style="margin-right: 10px; font-size: 16px">{{ user.name }}</span>
     <el-dropdown>
       <i class="el-icon-arrow-down"></i>
       <el-dropdown-menu slot="dropdown">
@@ -22,6 +22,13 @@
 <script>
 export default {
   name: "Header",
+  data(){
+    let u = sessionStorage.getItem("CurUser")
+    console.log(u)
+    return{
+        user : JSON.parse(u)
+    }
+  },
   methods:{
     toUser(){
       console.log('toUser');
