@@ -10,7 +10,8 @@
       </el-header>
 
       <el-main style="height: 100%;">
-        <Main></Main>
+<!--        <Main></Main>-->
+        <router-view/>
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
@@ -20,14 +21,13 @@
 <script>
 import Aside from "@/components/Aside";
 import Header from "@/components/Header";
-import Main from "@/components/Main";
+// import Main from "@/components/Main";
 
 export default {
   name: "Index",
   components:{
     Aside,
-    Header,
-    Main
+    Header
   },
   data(){
     return{

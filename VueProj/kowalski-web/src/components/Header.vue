@@ -32,13 +32,41 @@ export default {
   methods:{
     toUser(){
       console.log('toUser');
+      this.$router.push("/home")
     },
     logout(){
       console.log('logout');
+
+      this.$confirm('您确认要退出吗？','提示',{
+        confirmButtonText:'确定',
+        type:'warning',
+        center: true
+      })
+        .then(()=>{
+          this.$message({
+            type:'success',
+            message:'退出成功'
+          })
+          //跳转回登录页面。登录页面的路径就是一个/
+          this.$router.push("/")
+          //清空相关数据
+          sessionStorage.clear()
+        })
+      .catch(()=>{
+        this.$message({
+          type:'info',
+          message:'已取消操作'
+        })
+      })
+
+
     },
     collapse(){
       this.$emit('doCollapse')
     }
+  },
+  created(){
+    this.$router.push("/Home")
   },
   props:{
     icon:{
