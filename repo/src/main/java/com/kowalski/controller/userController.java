@@ -11,6 +11,7 @@ import com.kowalski.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -172,7 +173,7 @@ public class userController {
         System.out.println("userController.findByNo");
         List<User> list = userService.lambdaQuery().eq(User::getNo, no).list();
         return list.size() > 0 ? Result.success(list) : Result.fail();
-        // TODO: 2023/8/1 视频中的userService返回生命类型是List，如果出问题了请修改
+        // KOWA TODO: 2023/8/1 视频中的userService返回生命类型是List，如果出问题了请修改
 
     }
 
@@ -195,5 +196,4 @@ public class userController {
                  .eq(User::getPassword,user.getPassword()).list();
         return list.size() > 0 ? Result.success(list.get(0)) : Result.fail();
     }
-
 }

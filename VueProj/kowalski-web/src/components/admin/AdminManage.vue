@@ -1,0 +1,13 @@
+<template>
+  <span>Admin</span>
+</template>
+
+<script>
+export default {
+  name: "AdminManage"
+}
+</script>
+
+<style scoped>
+
+</style>

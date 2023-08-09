@@ -6,16 +6,18 @@
       style="height: 100%;border: 0; width: 200px"
       default-active="/Home"
       :collapse="isCollapse"
-      :collapse-transition="false">
+      :collapse-transition="false"
+      router
+  >
     <el-menu-item index="/Home">
       <i class="el-icon-s-home"></i>
       <span slot="title">首页</span>
     </el-menu-item>
-    <el-menu-item index="/One">
+    <el-menu-item index="/Admin">
       <i class="el-icon-s-comment"></i>
       <span slot="title">导航一</span>
     </el-menu-item>
-    <el-menu-item index="/Two">
+    <el-menu-item index="/User">
       <i class="el-icon-s-opportunity"></i>
       <span slot="title">导航二</span>
     </el-menu-item>
