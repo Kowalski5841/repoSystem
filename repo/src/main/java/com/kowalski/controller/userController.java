@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kowalski.common.QueryPageParam;
 import com.kowalski.common.Result;
+import com.kowalski.entity.Menu;
 import com.kowalski.entity.User;
+import com.kowalski.service.IMenuService;
 import com.kowalski.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,9 @@ public class userController {
     //让spring自动注入对象
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private IMenuService iMenuService;
 
     @GetMapping("/list")
     public List<User> list(){
@@ -173,7 +178,7 @@ public class userController {
         System.out.println("userController.findByNo");
         List<User> list = userService.lambdaQuery().eq(User::getNo, no).list();
         return list.size() > 0 ? Result.success(list) : Result.fail();
-        // KOWA TODO: 2023/8/1 视频中的userService返回生命类型是List，如果出问题了请修改
+        // KOWA TODO: 2023/8/1 视频中的userService返回声明类型是List，如果出问题了请修改
 
     }
 
@@ -194,6 +199,15 @@ public class userController {
         List list = userService.lambdaQuery()
                  .eq(User::getNo,user.getNo())
                  .eq(User::getPassword,user.getPassword()).list();
-        return list.size() > 0 ? Result.success(list.get(0)) : Result.fail();
+
+        if(list.size() > 0){
+            User user1 = (User) list.get(0);
+            List menuList = iMenuService.lambdaQuery().like(Menu::getMenuright,user1.getRoleId()).list();
+            HashMap res = new HashMap();
+            res.put("user", user1);
+            res.put("menu", menuList);
+            return Result.success(res);
+        }
+        return Result.fail();
     }
 }

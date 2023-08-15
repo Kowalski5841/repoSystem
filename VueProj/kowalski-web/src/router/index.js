@@ -40,6 +40,13 @@ const routes = [
     }
 ]
 
+export function resetRouter(){
+    router.matcher = new VueRouter({
+        mode:'history',
+        routes:[]
+    }).matcher
+}
+
 const router = new VueRouter({
     mode:'history',
     routes
@@ -49,4 +56,6 @@ const VueRouterPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(to) {
     return VueRouterPush.call(this, to).catch(err => err)
 }
+//把路由暴露出来给后续的功能使用
+//后续的功能指的就是vuex实现动态路由
 export default router;

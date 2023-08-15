@@ -68,7 +68,7 @@ public class CodeGenerator{
             // 包配置
             PackageConfig pc = new PackageConfig();
             pc.setModuleName(scanner("repo"));
-            pc.setParent("com.kowalski");
+            pc.setParent("com");
             mpg.setPackageInfo(pc);
 
             // 自定义配置

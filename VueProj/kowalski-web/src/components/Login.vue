@@ -54,7 +54,9 @@
                             console.log(res)
                             if(res.code===200){
                                 //存储
-                                sessionStorage.setItem("CurUser",JSON.stringify(res.data))
+                                sessionStorage.setItem("CurUser",JSON.stringify(res.data.user))
+                              console.log(res.data.menu)
+                              this.$store.commit("setMenu", res.data.menu)
                               console.log('session里村存的对象是：')
                               console.log(sessionStorage.getItem("CurUser"))
 
