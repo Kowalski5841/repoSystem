@@ -148,6 +148,8 @@ public class userController {
         //在这里获取需要查找的字段
         String name = (String)map.get("name");
         String sex = (String)map.get("sex");
+        String roleId = (String) map.get("roleId");
+
 //    Integer id = (Integer) map.get("id");
         Page<User> page = new Page<>();
         page.setCurrent(queryPageParam.getPageNum());
@@ -163,6 +165,9 @@ public class userController {
        if (StringUtils.isNotBlank(sex)) {
             lambdaQueryWrapper.eq(User::getSex,sex);
         }
+       if (StringUtils.isNotBlank(roleId)){
+           lambdaQueryWrapper.eq(User::getRoleId,roleId);
+       }
         //例如还可以这么写。
 //    lambdaQueryWrapper.eq(User::getId,id);
 
